@@ -1,0 +1,27 @@
+{
+  "recordedOn": "2026-10-20",
+  "historical": true,
+  "network": { "name": "Pharos Pacific Mainnet", "chainId": 1672, "nativeSymbol": "PROS" },
+  "officialMcp": "https://mcp.pharos.xyz/mcp",
+  "latestBlockObserved": "20771485",
+  "verifiedCapabilities": ["get_chain_info", "get_block_number", "get_logs", "eth_call", "get_code"],
+  "historyProof": {
+    "token": "0xC879C018dB60520F4355C26eD1a6D572cdAC1815",
+    "requestedRange": { "fromBlock": "20770486", "toBlock": "20771485" },
+    "eventCount": 66,
+    "pageLimitBlocks": 1000,
+    "sampleTransaction": "0xfb4b7b83c947bf9b1c697c7c6e378bda304e749b0a8b2a99b976868576d2c784",
+    "sampleLogIndex": 1,
+    "sampleBlock": 20770489
+  },
+  "hostedRateLimit": "120 requests per minute per IP",
+  "explorer": {
+    "name": "PharosScan / SocialScan",
+    "url": "https://pharosscan.xyz",
+    "documentedApi": "https://api.socialscan.io/pharos-mainnet/v1/developer/api",
+    "authentication": "Documented API key required",
+    "unauthenticatedCheck": "HTTP 503; therefore source verification remains UNKNOWN without a conclusive separately attributed response",
+    "historyLimitation": "Documented log retention may be limited for high-performance chains"
+  },
+  "statement": "A successful official MCP response proved real historical log retrieval. Later local connection attempts timed out and were not converted into empty history. Live reports are captured through the deployed Worker runtime."
+}

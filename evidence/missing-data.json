@@ -1,0 +1,7 @@
+{
+  "mode": "SIMULATED",
+  "purpose": "Deterministic regression evidence only; not a chain observation.",
+  "coverageStatus": "INSUFFICIENT_DATA",
+  "riskLevel": null,
+  "reason": "One or more required history pages failed; the engine does not convert missing history into LOW."
+}

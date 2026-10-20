@@ -1,0 +1,7 @@
+node_modules/
+worker.js
+.wrangler/
+.xdg/
+.npm-cache/
+.dev.vars
+*.log
