@@ -4,13 +4,12 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Pharos Wallet Risk Checker</title>
   <link rel="icon" type="image/png" href="/pharos-logo.png">
-  <style>
-    :root{--ink:#171b24;--paper:#f5f2ea;--card:#fffefa;--line:#d6d0c3;--muted:#6a6d75;--red:#b84038;--amber:#bd7b16;--green:#23745c;--blue:#2855c7}
-    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}button,input,select,textarea{font:inherit}.shell{max-width:1180px;margin:auto;padding:24px}.mast{display:flex;align-items:center;gap:14px;border-bottom:3px solid var(--ink);padding-bottom:16px}.mast img{width:38px;height:38px;object-fit:contain}.mast h1{font:700 27px/1.1 Georgia,serif;margin:0}.mast p{margin:2px 0 0;color:var(--muted)}.read-only{margin-left:auto;border:1px solid var(--green);color:var(--green);padding:5px 10px;border-radius:99px;font-size:12px;font-weight:700}.grid{display:grid;grid-template-columns:390px 1fr;gap:22px;margin-top:22px}.panel{background:var(--card);border:1px solid var(--line);box-shadow:4px 4px 0 #ded8ca;padding:18px}.panel h2{font:700 19px Georgia,serif;margin:0 0 14px}.field{margin:12px 0}.field label{display:block;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid #aaa397;background:white;padding:10px;border-radius:3px}.field textarea{min-height:70px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.primary{width:100%;background:var(--ink);color:white;border:0;padding:12px;font-weight:800;letter-spacing:.04em;cursor:pointer}.primary:disabled{opacity:.5}.examples{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chip{border:1px solid var(--line);background:#fff;padding:6px 9px;border-radius:99px;cursor:pointer;font-size:12px}.note{font-size:12px;color:var(--muted)}.status{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:16px}.verdict{font:800 42px/1 Georgia,serif}.LOW{color:var(--green)}.MEDIUM{color:var(--amber)}.HIGH{color:var(--red)}.INSUFFICIENT_DATA{color:var(--muted);font-size:27px}.coverage{text-align:right;font-size:12px}.callout{margin:14px 0;padding:12px;border-left:4px solid var(--blue);background:#eef2ff}.signals{display:grid;gap:10px}.signal{border:1px solid var(--line);background:#fff}.signal summary{cursor:pointer;list-style:none;padding:12px;display:flex;justify-content:space-between;font-weight:700}.signal .body{padding:0 12px 12px;color:#373b44}.badge{font-size:11px;padding:3px 7px;border-radius:99px;color:white}.badge.PASS{background:var(--green)}.badge.FLAG{background:var(--red)}.badge.UNKNOWN{background:var(--muted)}.timeline{border-left:2px solid var(--line);margin:12px 0 0 7px;padding-left:18px}.event{position:relative;margin:12px 0;font-size:13px}.event:before{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);left:-23px;top:6px}.mono{font:12px ui-monospace,SFMono-Regular,Consolas,monospace;word-break:break-all}.history a{display:block;padding:8px 0;border-bottom:1px solid var(--line);color:var(--blue);cursor:pointer}.hidden{display:none}.error{color:var(--red);padding:10px 0}@media(max-width:800px){.grid{grid-template-columns:1fr}.read-only{display:none}.shell{padding:14px}.status{display:block}.coverage{text-align:left;margin-top:10px}}
-  </style>
+  <link rel="stylesheet" href="/style.css">
 </head>
-<body><main class="shell">
-  <header class="mast"><img src="/pharos-logo.png" alt="Pharos logo"><div><h1>Wallet Risk Checker</h1><p>A read-only counterparty briefing before you send, approve, or interact.</p></div><span class="read-only">READ-ONLY · PHAROS 1672</span></header>
+<body><main class="desktop">
+  <header class="desktop-header"><a class="brand" href="/"><span class="logo-box"><img src="/pharos-logo.png" alt="Pharos logo" width="286" height="358"></span><span>PHAROS<span class="brand-sub">WALLET RISK CHECKER</span></span></a><span class="desktop-badge">PACIFIC MAINNET / 1672</span></header>
+  <section class="app-window"><div class="titlebar"><span>▦ WALLET_RISK_CHECKER.EXE</span><span class="chrome">_ □ ×</span></div><div class="menubar">FILE&nbsp;&nbsp; VIEW&nbsp;&nbsp; EVIDENCE <span>READ ONLY · NO WALLET</span></div><div class="body">
+  <section class="intro"><p>PHAROS SEASON OF AI / COUNTERPARTY BRIEFING</p><h1>CHECK → EXPLAIN → DECIDE<span>_</span></h1><div class="notice"><b>READ ONLY</b> No wallet connection, signing, broadcast path, or private key.</div></section>
   <div class="grid">
     <aside>
       <section class="panel">
@@ -32,6 +31,8 @@
     </aside>
     <section class="panel"><div id="empty"><h2>Evidence before confidence</h2><p>Choose a recorded example or enter any valid address. The checker scans a bounded event window, reconciles discovered approvals where possible, and keeps coverage separate from risk.</p><div class="callout">No wallet connection, signing, broadcast path, or private key is used.</div></div><div id="report" class="hidden"></div></section>
   </div>
+  </div></section>
+  <footer><span>PHAROS WALLET RISK CHECKER</span><span>BOUNDED ON-CHAIN EVIDENCE · SAVED D1 REPORTS</span></footer>
 </main>
 <script type="module">
 const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
