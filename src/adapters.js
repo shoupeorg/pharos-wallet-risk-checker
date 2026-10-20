@@ -2,6 +2,7 @@ import { APPROVAL_TOPIC, DEFAULT_RULES, MCP_URL, NETWORK, TRANSFER_TOPIC } from 
 import { addressTopic, decodeLog, dedupeEvents, normalizeAddress, ranges } from "./events.js";
 
 const ALLOWANCE_SELECTOR = "0xdd62ed3e";
+const MAX_TRANSACTION_ATTRIBUTIONS = 60;
 const hex32 = (address) => normalizeAddress(address).slice(2).padStart(64, "0");
 const parseText = (result, tool) => {
   if (result?.isError) throw new Error(`${tool} failed`);
@@ -10,7 +11,8 @@ const parseText = (result, tool) => {
   return JSON.parse(text);
 };
 
-export function classifySource(code, explorerRecord) {
+export function classifySource(code, explorerRecord, codeReadStatus = "SUCCESS") {
+  if (codeReadStatus !== "SUCCESS") return { accountType: "UNKNOWN", sourceVerification: "UNKNOWN", explanation: "The code read failed, so this run cannot determine whether the target is an EOA or contract." };
   const hasCode = typeof code === "string" && code !== "0x" && code !== "0x0";
   if (!hasCode) return { accountType: "EOA", sourceVerification: "NOT_APPLICABLE", explanation: "EOAs do not have contract source code." };
   if (!explorerRecord) return { accountType: "CONTRACT", sourceVerification: "UNKNOWN", explanation: "The official MCP confirms bytecode, but source verification requires a separate documented explorer response that was unavailable." };
@@ -68,13 +70,40 @@ export class InjectedAdapter {
       }
     }
     let code = null;
-    try { code = (await this.call("get_code", { address, block: String(latest) })).code; } catch { code = null; }
+    let codeReadStatus = "SUCCESS";
+    try {
+      code = (await this.call("get_code", { address, block: String(latest) })).code;
+      if (typeof code !== "string" || !/^0x[0-9a-f]*$/i.test(code)) throw new Error("invalid get_code result");
+    } catch { codeReadStatus = "FAILED"; }
+    const identity = classifySource(code, null, codeReadStatus);
+    const outflows = unique.filter((x) => x.type === "TRANSFER" && x.direction === "OUT");
+    const txCache = new Map();
+    for (const event of outflows) {
+      if (!txCache.has(event.transactionHash)) {
+        if (txCache.size >= MAX_TRANSACTION_ATTRIBUTIONS) {
+          txCache.set(event.transactionHash, { status: "UNKNOWN", error: `Attribution cap of ${MAX_TRANSACTION_ATTRIBUTIONS} unique transactions reached` });
+        } else try {
+          const transaction = await this.call("get_transaction", { hash: event.transactionHash });
+          if (!transaction?.from) throw new Error("transaction.from unavailable");
+          txCache.set(event.transactionHash, { status: "VERIFIED", from: normalizeAddress(transaction.from) });
+        } catch (error) {
+          txCache.set(event.transactionHash, { status: "UNKNOWN", error: error.message });
+        }
+      }
+      const attribution = txCache.get(event.transactionHash);
+      event.transactionFrom = attribution.from || null;
+      if (attribution.status !== "VERIFIED" || identity.accountType === "UNKNOWN") event.initiationStatus = "UNKNOWN";
+      else if (identity.accountType === "CONTRACT") event.initiationStatus = "CONTRACT_TOKEN_MOVEMENT";
+      else event.initiationStatus = attribution.from === address ? "VERIFIED" : "NOT_INITIATED";
+      if (attribution.error) event.attributionError = attribution.error;
+    }
+    const unknownAttribution = outflows.filter((x) => x.initiationStatus === "UNKNOWN").length;
     return {
       target: address,
       network: NETWORK,
       analysisBlock: latest,
       capturedAt: this.now().toISOString(),
-      identity: classifySource(code, null),
+      identity,
       events: unique,
       coverage: {
         requested: { fromBlock: from, toBlock: latest },
@@ -85,6 +114,7 @@ export class InjectedAdapter {
         batches,
         expectedBatches: pages.length * 3,
         failures,
+        attribution: { observedTokenOutflows: outflows.length, uniqueTransactions: txCache.size, maxTransactions: MAX_TRANSACTION_ATTRIBUTIONS, unknown: unknownAttribution, complete: unknownAttribution === 0 },
         source: "Official Pharos Chain MCP",
         endpoint: MCP_URL,
         limits: "get_logs pages are at most 1,000 blocks; this app requests three indexed event views per page.",

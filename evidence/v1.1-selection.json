@@ -1,0 +1,149 @@
+{
+  "engineVersion": "risk-engine/1.1.0",
+  "officialSource": "https://mcp.pharos.xyz/mcp",
+  "network": {
+    "name": "Pharos Pacific Mainnet",
+    "chainId": 1672,
+    "nativeSymbol": "PROS",
+    "explorer": "https://pharosscan.xyz"
+  },
+  "selection": {
+    "latestBlock": "20780767",
+    "token": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+    "logCount": 426,
+    "candidates": [
+      {
+        "address": "0x15ddce897d76ac39c188ade4d353711a60395315",
+        "in": 7,
+        "out": 10,
+        "events": 17,
+        "span": 2780,
+        "rapidPotential": 0,
+        "topOutPercent": 100
+      },
+      {
+        "address": "0xb143f6ca55358fac056eca7ac1a228a1f018b048",
+        "in": 27,
+        "out": 5,
+        "events": 32,
+        "span": 3857,
+        "rapidPotential": 0,
+        "topOutPercent": 100
+      },
+      {
+        "address": "0x4146d192da6428c9e1c243d2a953c625b5765623",
+        "in": 5,
+        "out": 17,
+        "events": 22,
+        "span": 3623,
+        "rapidPotential": 0,
+        "topOutPercent": 94
+      },
+      {
+        "address": "0x6c4ad865b836f49e4d54ba3f2a21f0a082a46766",
+        "in": 2,
+        "out": 0,
+        "events": 2,
+        "span": 1788,
+        "rapidPotential": 0,
+        "topOutPercent": 0
+      },
+      {
+        "address": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+        "in": 2,
+        "out": 1,
+        "events": 3,
+        "span": 1867,
+        "rapidPotential": 0,
+        "topOutPercent": 100
+      },
+      {
+        "address": "0x84dbd23178ba7fc6a2a396559139aef69d0f072a",
+        "in": 0,
+        "out": 2,
+        "events": 2,
+        "span": 1788,
+        "rapidPotential": 0,
+        "topOutPercent": 100
+      },
+      {
+        "address": "0x6ff6bb21309787bc69167fb4f99c95d73d0ba753",
+        "in": 2,
+        "out": 2,
+        "events": 4,
+        "span": 1719,
+        "rapidPotential": 0,
+        "topOutPercent": 50
+      }
+    ]
+  },
+  "checked": [
+    {
+      "address": "0x15ddce897d76ac39c188ade4d353711a60395315",
+      "reportId": "f5a234f8-ced6-4f01-83dd-cfa501ce3c4c",
+      "risk": "MEDIUM",
+      "statuses": {
+        "COUNTERPARTY_PATTERN": "FLAG",
+        "ACTIVITY_AGE": "PASS",
+        "APPROVAL_EXPOSURE": "PASS",
+        "RAPID_FLOW": "PASS"
+      }
+    },
+    {
+      "address": "0xb143f6ca55358fac056eca7ac1a228a1f018b048",
+      "reportId": "c1ca1f10-ecb4-4cc3-ad8a-f4f1179f2bcf",
+      "risk": "MEDIUM",
+      "statuses": {
+        "COUNTERPARTY_PATTERN": "FLAG",
+        "ACTIVITY_AGE": "PASS",
+        "APPROVAL_EXPOSURE": "PASS",
+        "RAPID_FLOW": "PASS"
+      }
+    },
+    {
+      "address": "0x4146d192da6428c9e1c243d2a953c625b5765623",
+      "reportId": "9b29161d-1ccd-4ec4-a11c-5aa69885e954",
+      "risk": null,
+      "statuses": {
+        "ACTIVITY_AGE": "PASS",
+        "APPROVAL_EXPOSURE": "PASS",
+        "RAPID_FLOW": "NOT_APPLICABLE",
+        "COUNTERPARTY_PATTERN": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "address": "0x6c4ad865b836f49e4d54ba3f2a21f0a082a46766",
+      "reportId": "239e6445-9a38-4210-8753-c29d3159bf7d",
+      "risk": null,
+      "statuses": {
+        "ACTIVITY_AGE": "PASS",
+        "APPROVAL_EXPOSURE": "PASS",
+        "RAPID_FLOW": "NOT_APPLICABLE",
+        "COUNTERPARTY_PATTERN": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "address": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+      "reportId": "1dfd8441-fbe0-4511-b141-2032fb9b26e2",
+      "risk": "LOW",
+      "statuses": {
+        "ACTIVITY_AGE": "PASS",
+        "APPROVAL_EXPOSURE": "PASS",
+        "RAPID_FLOW": "PASS",
+        "COUNTERPARTY_PATTERN": "PASS"
+      }
+    }
+  ],
+  "clean": {
+    "id": "1dfd8441-fbe0-4511-b141-2032fb9b26e2",
+    "address": "0x4ffd9c7e8641947662a43af298b734ca93530002"
+  },
+  "warning": {
+    "id": "f5a234f8-ced6-4f01-83dd-cfa501ce3c4c",
+    "address": "0x15ddce897d76ac39c188ade4d353711a60395315"
+  },
+  "configured": {
+    "id": "c693e5b4-c7d8-42b2-a449-fcae6dde925d",
+    "reusedSnapshotOf": "f5a234f8-ced6-4f01-83dd-cfa501ce3c4c"
+  }
+}

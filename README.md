@@ -17,8 +17,8 @@ A read-only **counterparty briefing before interaction** for Pharos Pacific Main
 |---|---|---|
 | Observed activity maturity | FLAG when the first supported event in the bounded range is no more than 120 blocks old; PASS only when the observed span is at least 1,200 blocks | First observed activity is not wallet creation or contract deployment time. |
 | Current approval exposure | Discover standard Approval events, then reconcile `allowance(owner,spender)` at the analysis block; FLAG only when a discovered allowance remains effectively unlimited | Historical events do not enumerate all approvals; non-standard tokens can be UNKNOWN. |
-| Rapid funding-to-outflow | FLAG when the address receives a token and initiates an outgoing transfer of that token within 10 blocks | This can be legitimate routing. Unsolicited inbound transfers alone never trigger it. |
-| Counterparty pattern | FLAG for a chain-matched USER-FLAGGED outgoing counterparty, or at least 80% concentration across at least 3 initiated outflows | A user watchlist is not an official blacklist; concentration is not proof of common ownership or wrongdoing. |
+| Rapid funding-to-initiated-outflow | For an EOA, verify `transaction.from == target`, then FLAG when a later outgoing event for the same token type follows an inbound event within 10 blocks | Exact block/transaction/log order is used, each outgoing is used once, and this does not trace the same token units. Contract token movement is not called transaction initiation. |
+| Initiated counterparty pattern | For an EOA, verify `transaction.from == target`, then FLAG for a chain-matched USER-FLAGGED recipient or at least 80% concentration across at least 3 verified initiated outflows | `transferFrom`, liquidations, and protocol-caused token movement are excluded or UNKNOWN. A user watchlist is not an official blacklist. |
 
 Thresholds are bounded and configurable. One flagged independent family produces MEDIUM, two or more produce HIGH, and zero produces LOW only when at least three families are evaluated and retrieval is complete and fresh. Otherwise the result is `INSUFFICIENT_DATA` and risk is unassessed. Correlated facts stay inside one family.
 
@@ -28,7 +28,7 @@ The core scans a bounded 5,000-block window. `get_logs` is paged at no more than
 
 The official MCP provides the current network, block, code, calls, and indexed logs. The official hosted MCP is rate-limited to 120 requests per minute per IP. Its hosted transaction broadcast tool is disabled, and this project does not call it.
 
-Source verification is separate metadata. An EOA is `NOT_APPLICABLE`. Bytecode alone yields contract type but never “verified.” SocialScan's documented explorer API requires an API key; without a conclusive separately attributed response, verification is `UNKNOWN`, not `UNVERIFIED`. Explorer history may also have retention limits. See [data-foundation.json](evidence/data-foundation.json).
+Source verification is separate metadata. An EOA is established only after a successful empty `get_code` response. A failed code read makes account type and verification `UNKNOWN`. Bytecode establishes contract type but never “verified.” SocialScan's documented explorer API requires an API key; without a conclusive separately attributed response, verification is `UNKNOWN`, not `UNVERIFIED`. Explorer history may also have retention limits. See [data-foundation.json](evidence/data-foundation.json).
 
 Official references:
 
@@ -39,14 +39,15 @@ Official references:
 
 ## Real demonstrations
 
-The publication workflow records two live reports from real Pharos observations:
+Corrected `risk-engine/1.1.0` evidence is versioned separately:
 
-- `evidence/live-clean.json`: `0x903cf528c0c54ecb99991a69e0e095589917a0ce`, a real previously observed transfer recipient with no supported events in the current complete 1,000-block window. Three applicable families evaluate PASS, activity age remains UNKNOWN, and the result is LOW observed risk within that narrow quiet scope—not proof of safety or inactivity outside it.
-- `evidence/live-warning.json`: `0x912c9ade24d44d8922f0866d8dcb079f1363f647`, MEDIUM because 22 genuine receive-then-initiated-outflow sequences occurred within the configured 10-block rule. This is a behavioral warning, not a fraud verdict.
-- `evidence/live-config-change.json`: the same real activity re-evaluated with an explicit USER-FLAGGED counterparty entry, demonstrating a genuine configuration change.
+- `evidence/v1.1-live-clean.json`: an active real EOA with all four signal families evaluated PASS under unchanged rules.
+- `evidence/v1.1-live-warning.json`: a real warning after verifying `transaction.from` for claimed target-initiated activity.
+- `evidence/v1.1-live-config-change.json`: the exact warning snapshot re-evaluated with a USER-FLAGGED counterparty; all non-watchlist observations remain identical.
+- `evidence/v1.1-selection.json`: bounded selection inputs, candidates checked, report IDs, and snapshot linkage.
 - `evidence/missing-data.json`: a clearly labeled SIMULATED outage fixture proving failed retrieval does not become LOW.
 
-Historical files remain historical. Opening a saved report labels it historical; a fresh failure never silently reuses it.
+The original `live-clean.json`, `live-warning.json`, and `live-config-change.json` remain unchanged historical records from `risk-engine/1.0.0`; they are not presented as corrected proof. Opening a saved report labels it historical, and a fresh failure never silently reuses it.
 
 ## Agent workflow
 
@@ -76,7 +77,7 @@ Reused from the earlier Event Monitor: official MCP transport, bounded log pagin
 
 ## Tests
 
-`npm test` covers injected MCP responses, all four families, pagination boundaries, deduplication, EOA/contract and source-verification states, spam versus initiated exposure, current allowance reconciliation, thresholds, correlated-family scoring, truncated/stale data, chain-specific watchlists, intent ambiguity/fallback, evidence integrity, persistence recovery, and the read-only tool allowlist. `npm run check` runs the full tests and production bundle.
+`npm test` covers injected MCP responses, all four families, pagination boundaries, deduplication, `transaction.from` attribution, EOA/contract/UNKNOWN account types, same-block transaction/log ordering, single-use outflow matching, spam versus initiated exposure, current allowance reconciliation, thresholds, same-snapshot watchlist re-evaluation, truncated/stale data, chain-specific watchlists, intent fallback, evidence integrity, persistence recovery, and the read-only tool allowlist. `npm run check` runs the full tests and production bundle.
 
 ## Privacy and limitations
 

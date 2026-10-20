@@ -173,3 +173,77 @@ test("deduplication key is transaction hash plus log index", () => {
   const two = { ...one, id: `${tx(1)}:1`, logIndex: 1 };
   assert.equal(dedupeEvents([one, one, two]).length, 2);
 });
+
+test("token sender is not called initiator when transaction.from differs", async () => {
+  const outbound = log({ owner: A, peer: B, block: 90 });
+  const adapter = new InjectedAdapter(async (name, args) => {
+    if (name === "get_chain_info") return { chainId: 1672 };
+    if (name === "get_block_number") return { blockNumber: "100" };
+    if (name === "get_code") return { code: "0x" };
+    if (name === "get_transaction") return { from: B };
+    if (name === "get_logs" && args.topics[0] === TRANSFER_TOPIC && args.topics[1] === addressTopic(A)) return [outbound];
+    if (name === "get_logs") return [];
+    throw new Error(name);
+  });
+  const snapshot = await adapter.collect(A, { historyBlocks: 100, pageBlocks: 100 });
+  assert.equal(snapshot.events[0].initiationStatus, "NOT_INITIATED");
+  const result = analyze(snapshot);
+  assert.equal(result.signals.find((x) => x.id === "RAPID_FLOW").status, "PASS");
+  assert.equal(result.signals.find((x) => x.id === "COUNTERPARTY_PATTERN").observed.initiatedOutflows, 0);
+});
+
+test("contract token movement is distinct from transaction initiation", async () => {
+  const outbound = log({ owner: A, peer: B, block: 90 });
+  const adapter = new InjectedAdapter(async (name, args) => {
+    if (name === "get_chain_info") return { chainId: 1672 };
+    if (name === "get_block_number") return { blockNumber: "100" };
+    if (name === "get_code") return { code: "0x6000" };
+    if (name === "get_transaction") return { from: B };
+    if (name === "get_logs" && args.topics[0] === TRANSFER_TOPIC && args.topics[1] === addressTopic(A)) return [outbound];
+    return [];
+  });
+  const snapshot = await adapter.collect(A, { historyBlocks: 100, pageBlocks: 100 });
+  assert.equal(snapshot.identity.accountType, "CONTRACT");
+  assert.equal(snapshot.events[0].initiationStatus, "CONTRACT_TOKEN_MOVEMENT");
+  const result = analyze(snapshot);
+  assert.equal(result.signals.find((x) => x.id === "RAPID_FLOW").status, "NOT_APPLICABLE");
+  assert.equal(result.signals.find((x) => x.id === "COUNTERPARTY_PATTERN").status, "NOT_APPLICABLE");
+});
+
+test("failed code read yields UNKNOWN account type, never EOA", async () => {
+  const adapter = new InjectedAdapter(async (name) => {
+    if (name === "get_chain_info") return { chainId: 1672 };
+    if (name === "get_block_number") return { blockNumber: "100" };
+    if (name === "get_code") throw new Error("RPC unavailable");
+    if (name === "get_logs") return [];
+    return { result: "0x0" };
+  });
+  const snapshot = await adapter.collect(A, { historyBlocks: 100, pageBlocks: 100 });
+  assert.equal(snapshot.identity.accountType, "UNKNOWN");
+  assert.equal(snapshot.identity.sourceVerification, "UNKNOWN");
+  assert.equal(analyze(snapshot).coverageStatus, "INSUFFICIENT_DATA");
+});
+
+test("rapid flow uses exact transaction/log order and each outgoing at most once", () => {
+  const snapshot = fixture("clean");
+  const event = (id, direction, txIndex, logIndex) => ({ id: `${tx(id)}:${logIndex}`, type: "TRANSFER", contract: T, blockNumber: 5000, transactionIndex: txIndex, logIndex, transactionHash: tx(id), rawValue: "1", direction, from: direction === "OUT" ? snapshot.target : B, to: direction === "OUT" ? B : snapshot.target, initiationStatus: direction === "OUT" ? "VERIFIED" : null });
+  snapshot.events = [event(1, "IN", 1, 5), event(2, "OUT", 1, 4)];
+  let rapid = analyze(snapshot).signals.find((x) => x.id === "RAPID_FLOW");
+  assert.equal(rapid.status, "PASS", "an earlier log in the same transaction must not match");
+  snapshot.events = [event(3, "IN", 1, 1), event(4, "IN", 1, 2), event(5, "OUT", 1, 3)];
+  rapid = analyze(snapshot).signals.find((x) => x.id === "RAPID_FLOW");
+  assert.equal(rapid.observed.sequences, 1, "one outgoing cannot satisfy two sequences");
+  assert.match(rapid.explanation, /does not trace the same token units/i);
+});
+
+test("watchlist configuration re-evaluates the exact same snapshot", () => {
+  const snapshot = fixture("clean");
+  const peer = snapshot.events.find((x) => x.direction === "OUT").to;
+  const plain = analyze(snapshot);
+  const configured = analyze(snapshot, { watchlist: [{ address: peer, chainId: 1672, label: "Review", reason: "User concern", provenance: "user supplied" }] });
+  assert.strictEqual(plain.target, configured.target);
+  assert.strictEqual(plain.coverage.analysisBlock, configured.coverage.analysisBlock);
+  assert.deepEqual(plain.coverage.requested, configured.coverage.requested);
+  assert.equal(plain.signals.find((x) => x.id === "COUNTERPARTY_PATTERN").status, "PASS");
+  assert.equal(configured.signals.find((x) => x.id === "COUNTERPARTY_PATTERN").status, "FLAG");
+});

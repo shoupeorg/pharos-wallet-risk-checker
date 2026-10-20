@@ -1,7 +1,7 @@
 import { NETWORK } from "./constants.js";
 
 const tx = (n) => `0x${n.toString(16).padStart(64, "0")}`;
-const ev = (id, blockNumber, direction, from, to, contract = "0xc879c018db60520f4355c26ed1a6d572cdac1815") => ({ id: `${tx(id)}:0`, type: "TRANSFER", contract, blockNumber, timestamp: new Date(Date.now() - (6000 - blockNumber) * 1000).toISOString(), transactionHash: tx(id), logIndex: 0, rawValue: "1000000", direction, from, to });
+const ev = (id, blockNumber, direction, from, to, contract = "0xc879c018db60520f4355c26ed1a6d572cdac1815") => ({ id: `${tx(id)}:0`, type: "TRANSFER", contract, blockNumber, transactionIndex: 0, timestamp: new Date(Date.now() - (6000 - blockNumber) * 1000).toISOString(), transactionHash: tx(id), transactionFrom: direction === "OUT" ? from : null, initiationStatus: direction === "OUT" ? "VERIFIED" : null, logIndex: 0, rawValue: "1000000", direction, from, to });
 const CLEAN = "0x1111111111111111111111111111111111111111";
 const RISKY = "0x2222222222222222222222222222222222222222";
 const PEER = "0x3333333333333333333333333333333333333333";

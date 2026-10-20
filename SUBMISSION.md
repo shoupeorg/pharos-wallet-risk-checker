@@ -1,6 +1,6 @@
 # Submission notes
 
-Pharos Wallet Risk Checker is a read-only counterparty briefing for Pharos Pacific Mainnet. It uses official Pharos Chain MCP history and calls to evaluate four distinct, explainable signal families: observed activity maturity, reconciled approval exposure, rapid funding-to-outflow, and counterparty/watchlist patterns. Coverage is independent from risk, failed history never becomes LOW, and every flag expands to transaction/block/log evidence.
+Pharos Wallet Risk Checker is a read-only counterparty briefing for Pharos Pacific Mainnet. It uses official Pharos Chain MCP history and calls to evaluate four distinct signal families. EOA-initiated outflows require `transaction.from == target`; contract token movements and failed attribution are labeled separately. Rapid-flow ordering uses block, transaction index, and log index, and never reuses one outgoing event. Coverage is independent from risk, failed history never becomes LOW, and every flag expands to transaction/block/log evidence.
 
 The public reviewer can inspect real clean and warning-bearing reports, change a rule or user watchlist entry, reopen persisted history, and run an arbitrary supported address without login or wallet connection. The agent entry point uses a credential-free deterministic tool plan and shared engine; no LLM dependency, signing, broadcast, or spending exists.
 

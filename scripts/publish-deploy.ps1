@@ -30,13 +30,17 @@ Write-Host '==> Capture real live demonstrations'
 node scripts/capture-live-evidence.mjs 'https://pharos-wallet-risk-checker.shoupeorg.workers.dev'
 if ($LASTEXITCODE -ne 0) { throw 'Live evidence capture failed; no result was relabeled.' }
 
+Write-Host '==> Redeploy selected recorded-example asset'
+npm run deploy
+if ($LASTEXITCODE -ne 0) { throw 'Final asset deployment failed.' }
+
 Write-Host '==> Publish exact source and evidence'
 git config --global --add safe.directory $Project
 git init
 git branch -M main
 git remote set-url origin https://github.com/shoupeorg/pharos-wallet-risk-checker.git
 git add .
-git commit -m 'Build Pharos Wallet Risk Checker'
+git commit -m 'Correct transaction attribution and evidence'
 if ($LASTEXITCODE -ne 0) { throw 'Git commit failed.' }
 git push -u origin main
 if ($LASTEXITCODE -ne 0) { throw 'GitHub push failed.' }

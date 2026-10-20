@@ -12,7 +12,10 @@
     "deploy": "npm run build && wrangler deploy --no-bundle",
     "db:migrate:remote": "wrangler d1 migrations apply pharos-wallet-risk-checker --remote"
   },
-  "dependencies": { "@modelcontextprotocol/sdk": "1.32.1" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "undici": "7.29.1"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-json": "6.1.0",

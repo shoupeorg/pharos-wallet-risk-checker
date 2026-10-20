@@ -18,6 +18,7 @@ export function decodeLog(log, direction) {
     blockNumber: numeric(log.blockNumber),
     timestamp: log.blockTimestamp ? new Date(numeric(log.blockTimestamp) * 1000).toISOString() : null,
     transactionHash: String(log.transactionHash).toLowerCase(),
+    transactionIndex: numeric(log.transactionIndex || "0x0"),
     logIndex: numeric(log.logIndex),
     rawValue: quantity(log.data || "0x0"),
     direction,
@@ -30,6 +31,10 @@ export function decodeLog(log, direction) {
 export function dedupeEvents(events) {
   const seen = new Set();
   return events.filter((event) => event && !seen.has(event.id) && seen.add(event.id)).sort((a, b) => a.blockNumber - b.blockNumber || a.logIndex - b.logIndex);
+}
+
+export function compareEventPosition(a, b) {
+  return a.blockNumber - b.blockNumber || (a.transactionIndex ?? 0) - (b.transactionIndex ?? 0) || a.logIndex - b.logIndex;
 }
 
 export function ranges(fromBlock, toBlock, pageBlocks = 1000) {

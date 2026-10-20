@@ -1,0 +1,258 @@
+{
+  "id": "1dfd8441-fbe0-4511-b141-2032fb9b26e2",
+  "capturedAt": "2026-10-20T21:42:45.297Z",
+  "historical": false,
+  "readOnly": true,
+  "mode": "LIVE",
+  "inputs": {
+    "target": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+    "ownAddress": null,
+    "action": "send",
+    "question": "Evaluate this active counterparty using corrected transaction-origin attribution.",
+    "rules": {
+      "historyBlocks": 5000,
+      "pageBlocks": 1000,
+      "recentFirstSeenBlocks": 120,
+      "matureObservedBlocks": 1200,
+      "rapidFlowBlocks": 10,
+      "concentrationPercent": 80,
+      "concentrationMinOutflows": 3,
+      "maxAgeSeconds": 900
+    },
+    "watchlist": []
+  },
+  "agent": {
+    "action": "send",
+    "question": "Evaluate this active counterparty using corrected transaction-origin attribution.",
+    "plan": [
+      "Validate network and address",
+      "Read bounded indexed history",
+      "Reconcile discovered permissions",
+      "Evaluate four deterministic signal families",
+      "Explain evidence and gaps"
+    ],
+    "capability": "DETERMINISTIC_FALLBACK",
+    "explanation": "No public model credential is required. Intent routing is deterministic; chain reads, calculations, citations, and risk rules remain deterministic."
+  },
+  "snapshot": {
+    "target": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+    "network": {
+      "name": "Pharos Pacific Mainnet",
+      "chainId": 1672,
+      "nativeSymbol": "PROS",
+      "explorer": "https://pharosscan.xyz"
+    },
+    "analysisBlock": 20780840,
+    "capturedAt": "2026-10-20T21:42:45.138Z",
+    "identity": {
+      "accountType": "EOA",
+      "sourceVerification": "NOT_APPLICABLE",
+      "explanation": "EOAs do not have contract source code."
+    },
+    "events": [
+      {
+        "id": "0x5d164fe7d00bf5d75b1a081a3b92ff9cd40d5ca1af79c35cfebdb8a36dfa7691:1",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "blockNumber": 20777718,
+        "timestamp": "2026-10-20T20:47:19.000Z",
+        "transactionHash": "0x5d164fe7d00bf5d75b1a081a3b92ff9cd40d5ca1af79c35cfebdb8a36dfa7691",
+        "transactionIndex": 0,
+        "logIndex": 1,
+        "rawValue": "49734966",
+        "direction": "IN",
+        "type": "TRANSFER",
+        "from": "0x912c9ade24d44d8922f0866d8dcb079f1363f647",
+        "to": "0x4ffd9c7e8641947662a43af298b734ca93530002"
+      },
+      {
+        "id": "0x07523ceb6eb3a8773fee7936118308802265a3d22cfb06f02921e7f27ce0620f:1",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "blockNumber": 20777721,
+        "timestamp": "2026-10-20T20:47:22.000Z",
+        "transactionHash": "0x07523ceb6eb3a8773fee7936118308802265a3d22cfb06f02921e7f27ce0620f",
+        "transactionIndex": 0,
+        "logIndex": 1,
+        "rawValue": "49701387",
+        "direction": "IN",
+        "type": "TRANSFER",
+        "from": "0x912c9ade24d44d8922f0866d8dcb079f1363f647",
+        "to": "0x4ffd9c7e8641947662a43af298b734ca93530002"
+      },
+      {
+        "id": "0xe81a27f058702e07136fea8a04fba19c2a3a50bf73453ff2f9ba6541d419934d:11",
+        "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+        "blockNumber": 20779585,
+        "timestamp": "2026-10-20T21:20:20.000Z",
+        "transactionHash": "0xe81a27f058702e07136fea8a04fba19c2a3a50bf73453ff2f9ba6541d419934d",
+        "transactionIndex": 2,
+        "logIndex": 11,
+        "rawValue": "49910726",
+        "direction": "OUT",
+        "type": "TRANSFER",
+        "from": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+        "to": "0xe840cf53140f04f55d9e39e829a307bfca74297e",
+        "transactionFrom": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+        "initiationStatus": "VERIFIED"
+      }
+    ],
+    "coverage": {
+      "requested": {
+        "fromBlock": 20775841,
+        "toBlock": 20780840
+      },
+      "retrieved": {
+        "fromBlock": 20775841,
+        "toBlock": 20780840
+      },
+      "complete": true,
+      "truncated": false,
+      "sampled": false,
+      "batches": 15,
+      "expectedBatches": 15,
+      "failures": [],
+      "attribution": {
+        "observedTokenOutflows": 1,
+        "uniqueTransactions": 1,
+        "maxTransactions": 60,
+        "unknown": 0,
+        "complete": true
+      },
+      "source": "Official Pharos Chain MCP",
+      "endpoint": "https://mcp.pharos.xyz/mcp",
+      "limits": "get_logs pages are at most 1,000 blocks; this app requests three indexed event views per page."
+    }
+  },
+  "analysis": {
+    "engineVersion": "risk-engine/1.1.0",
+    "target": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+    "action": "send",
+    "question": "Evaluate this active counterparty using corrected transaction-origin attribution.",
+    "rules": {
+      "historyBlocks": 5000,
+      "pageBlocks": 1000,
+      "recentFirstSeenBlocks": 120,
+      "matureObservedBlocks": 1200,
+      "rapidFlowBlocks": 10,
+      "concentrationPercent": 80,
+      "concentrationMinOutflows": 3,
+      "maxAgeSeconds": 900
+    },
+    "riskLevel": "LOW",
+    "coverageStatus": "SUFFICIENT",
+    "headline": "LOW observed risk within the checked scope.",
+    "reasons": [],
+    "signals": [
+      {
+        "id": "ACTIVITY_AGE",
+        "name": "Observed activity maturity",
+        "status": "PASS",
+        "observed": {
+          "earliestBlock": 20777718,
+          "observedAgeBlocks": 3122
+        },
+        "rule": "FLAG at ≤ 120; PASS at ≥ 1200 blocks",
+        "mattersFor": "send, approve, interact",
+        "explanation": "Supported activity spans at least 3122 blocks in the checked window.",
+        "evidence": [
+          {
+            "id": "0x5d164fe7d00bf5d75b1a081a3b92ff9cd40d5ca1af79c35cfebdb8a36dfa7691:1",
+            "contract": "0xc879c018db60520f4355c26ed1a6d572cdac1815",
+            "blockNumber": 20777718,
+            "timestamp": "2026-10-20T20:47:19.000Z",
+            "transactionHash": "0x5d164fe7d00bf5d75b1a081a3b92ff9cd40d5ca1af79c35cfebdb8a36dfa7691",
+            "transactionIndex": 0,
+            "logIndex": 1,
+            "rawValue": "49734966",
+            "direction": "IN",
+            "type": "TRANSFER",
+            "from": "0x912c9ade24d44d8922f0866d8dcb079f1363f647",
+            "to": "0x4ffd9c7e8641947662a43af298b734ca93530002",
+            "note": "Earliest supported event observed in the checked range"
+          }
+        ],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      },
+      {
+        "id": "APPROVAL_EXPOSURE",
+        "name": "Current approval exposure",
+        "status": "PASS",
+        "observed": {
+          "approvalsObserved": 0
+        },
+        "rule": "FLAG when a discovered allowance remains effectively unlimited",
+        "mattersFor": "approve",
+        "explanation": "No standard Approval events owned by this address were observed in the checked range. Non-standard tokens and older approvals remain outside coverage.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      },
+      {
+        "id": "RAPID_FLOW",
+        "name": "Rapid funding-to-initiated-outflow",
+        "status": "PASS",
+        "observed": {
+          "sequences": 0,
+          "observedTokenOutflows": 1,
+          "verifiedInitiatedOutflows": 1,
+          "unattributedOutflows": 0
+        },
+        "rule": "Inbound then target-initiated outflow within 10 blocks",
+        "mattersFor": "send, interact",
+        "explanation": "No verified target-initiated outflow followed an inbound transfer in exact block, transaction, and log order. Unsolicited inbound transfers alone do not trigger this flag.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      },
+      {
+        "id": "COUNTERPARTY_PATTERN",
+        "name": "Initiated counterparty pattern",
+        "status": "PASS",
+        "observed": {
+          "observedTokenOutflows": 1,
+          "initiatedOutflows": 1,
+          "unattributedOutflows": 0,
+          "topRecipient": "0xe840cf53140f04f55d9e39e829a307bfca74297e",
+          "topRecipientPercent": 100,
+          "userFlaggedMatches": 0
+        },
+        "rule": "FLAG at ≥ 80% across ≥ 3 verified target-initiated outflows, or any chain-matched user watchlist exposure",
+        "mattersFor": "send, approve, interact",
+        "explanation": "No configured watchlist exposure or concentrated verified target-initiated-outflow pattern was observed in the checked range.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      }
+    ],
+    "coverage": {
+      "requested": {
+        "fromBlock": 20775841,
+        "toBlock": 20780840
+      },
+      "retrieved": {
+        "fromBlock": 20775841,
+        "toBlock": 20780840
+      },
+      "complete": true,
+      "truncated": false,
+      "sampled": false,
+      "batches": 15,
+      "expectedBatches": 15,
+      "failures": [],
+      "attribution": {
+        "observedTokenOutflows": 1,
+        "uniqueTransactions": 1,
+        "maxTransactions": 60,
+        "unknown": 0,
+        "complete": true
+      },
+      "source": "Official Pharos Chain MCP",
+      "endpoint": "https://mcp.pharos.xyz/mcp",
+      "limits": "get_logs pages are at most 1,000 blocks; this app requests three indexed event views per page.",
+      "applicable": 4,
+      "evaluated": 4,
+      "unknown": 0,
+      "stale": false,
+      "analysisBlock": 20780840,
+      "analysisTime": "2026-10-20T21:42:45.138Z"
+    },
+    "method": "HIGH requires two independent flagged signal families; MEDIUM requires one; LOW requires zero and sufficient coverage. Data gaps never become LOW.",
+    "disclaimer": "This is a bounded counterparty briefing, not a safety certification, criminal attribution, or scam prediction."
+  }
+}
