@@ -5,6 +5,6 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
-  "d1_databases": [{ "binding": "DB", "database_name": "pharos-wallet-risk-checker", "database_id": "REPLACE_WITH_D1_ID", "migrations_dir": "migrations" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "pharos-wallet-risk-checker", "database_id": "84c92dab-5373-41cf-830b-37423e605a3e", "migrations_dir": "migrations" }],
   "observability": { "enabled": true }
 }

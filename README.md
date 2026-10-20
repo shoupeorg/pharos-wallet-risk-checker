@@ -41,8 +41,8 @@ Official references:
 
 The publication workflow records two live reports from real Pharos observations:
 
-- `evidence/live-clean.json`: a real address with no material flags in a complete, bounded scope and a LOW observed-risk result.
-- `evidence/live-warning.json`: a real address with a genuine rule-based warning such as rapid receive-then-send behavior. This is not a fraud verdict.
+- `evidence/live-clean.json`: `0x903cf528c0c54ecb99991a69e0e095589917a0ce`, a real previously observed transfer recipient with no supported events in the current complete 1,000-block window. Three applicable families evaluate PASS, activity age remains UNKNOWN, and the result is LOW observed risk within that narrow quiet scope—not proof of safety or inactivity outside it.
+- `evidence/live-warning.json`: `0x912c9ade24d44d8922f0866d8dcb079f1363f647`, MEDIUM because 22 genuine receive-then-initiated-outflow sequences occurred within the configured 10-block rule. This is a behavioral warning, not a fraud verdict.
 - `evidence/live-config-change.json`: the same real activity re-evaluated with an explicit USER-FLAGGED counterparty entry, demonstrating a genuine configuration change.
 - `evidence/missing-data.json`: a clearly labeled SIMULATED outage fixture proving failed retrieval does not become LOW.
 

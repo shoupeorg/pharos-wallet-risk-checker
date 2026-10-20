@@ -1,0 +1,175 @@
+{
+  "id": "42b3e5b1-8fec-407d-be17-fec3c1f061c2",
+  "capturedAt": "2026-10-20T20:09:15.313Z",
+  "historical": true,
+  "readOnly": true,
+  "mode": "LIVE",
+  "inputs": {
+    "target": "0x903cf528c0c54ecb99991a69e0e095589917a0ce",
+    "ownAddress": null,
+    "action": "send",
+    "question": "Assess this real counterparty within a bounded live scope.",
+    "rules": {
+      "historyBlocks": 1000,
+      "pageBlocks": 1000,
+      "recentFirstSeenBlocks": 120,
+      "matureObservedBlocks": 1200,
+      "rapidFlowBlocks": 10,
+      "concentrationPercent": 80,
+      "concentrationMinOutflows": 3,
+      "maxAgeSeconds": 900
+    },
+    "watchlist": []
+  },
+  "agent": {
+    "action": "send",
+    "question": "Assess this real counterparty within a bounded live scope.",
+    "plan": [
+      "Validate network and address",
+      "Read bounded indexed history",
+      "Reconcile discovered permissions",
+      "Evaluate four deterministic signal families",
+      "Explain evidence and gaps"
+    ],
+    "capability": "DETERMINISTIC_FALLBACK",
+    "explanation": "No public model credential is required. Intent routing is deterministic; chain reads, calculations, citations, and risk rules remain deterministic."
+  },
+  "snapshot": {
+    "target": "0x903cf528c0c54ecb99991a69e0e095589917a0ce",
+    "network": {
+      "name": "Pharos Pacific Mainnet",
+      "chainId": 1672,
+      "nativeSymbol": "PROS",
+      "explorer": "https://pharosscan.xyz"
+    },
+    "analysisBlock": 20775583,
+    "capturedAt": "2026-10-20T20:09:15.147Z",
+    "identity": {
+      "accountType": "EOA",
+      "sourceVerification": "NOT_APPLICABLE",
+      "explanation": "EOAs do not have contract source code."
+    },
+    "events": [],
+    "coverage": {
+      "requested": {
+        "fromBlock": 20774584,
+        "toBlock": 20775583
+      },
+      "retrieved": {
+        "fromBlock": 20774584,
+        "toBlock": 20775583
+      },
+      "complete": true,
+      "truncated": false,
+      "sampled": false,
+      "batches": 3,
+      "expectedBatches": 3,
+      "failures": [],
+      "source": "Official Pharos Chain MCP",
+      "endpoint": "https://mcp.pharos.xyz/mcp",
+      "limits": "get_logs pages are at most 1,000 blocks; this app requests three indexed event views per page."
+    }
+  },
+  "analysis": {
+    "engineVersion": "risk-engine/1.0.0",
+    "target": "0x903cf528c0c54ecb99991a69e0e095589917a0ce",
+    "action": "send",
+    "question": "Assess this real counterparty within a bounded live scope.",
+    "rules": {
+      "historyBlocks": 1000,
+      "pageBlocks": 1000,
+      "recentFirstSeenBlocks": 120,
+      "matureObservedBlocks": 1200,
+      "rapidFlowBlocks": 10,
+      "concentrationPercent": 80,
+      "concentrationMinOutflows": 3,
+      "maxAgeSeconds": 900
+    },
+    "riskLevel": "LOW",
+    "coverageStatus": "SUFFICIENT",
+    "headline": "LOW observed risk within the checked scope.",
+    "reasons": [],
+    "signals": [
+      {
+        "id": "ACTIVITY_AGE",
+        "name": "Observed activity maturity",
+        "status": "UNKNOWN",
+        "observed": null,
+        "rule": "At least 1200 observed blocks",
+        "mattersFor": "send, approve, interact",
+        "explanation": "No supported token activity was found in the bounded window. This is not proof that the address is new or inactive.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      },
+      {
+        "id": "APPROVAL_EXPOSURE",
+        "name": "Current approval exposure",
+        "status": "PASS",
+        "observed": {
+          "approvalsObserved": 0
+        },
+        "rule": "FLAG when a discovered allowance remains effectively unlimited",
+        "mattersFor": "approve",
+        "explanation": "No standard Approval events owned by this address were observed in the checked range. Non-standard tokens and older approvals remain outside coverage.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      },
+      {
+        "id": "RAPID_FLOW",
+        "name": "Rapid funding-to-outflow",
+        "status": "PASS",
+        "observed": {
+          "sequences": 0
+        },
+        "rule": "Inbound then initiated outflow within 10 blocks",
+        "mattersFor": "send, interact",
+        "explanation": "No matching rapid receive-then-send sequence was observed in the checked range. Unsolicited inbound transfers alone do not trigger this flag.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      },
+      {
+        "id": "COUNTERPARTY_PATTERN",
+        "name": "Counterparty pattern",
+        "status": "PASS",
+        "observed": {
+          "initiatedOutflows": 0,
+          "topRecipient": null,
+          "topRecipientPercent": 0,
+          "userFlaggedMatches": 0
+        },
+        "rule": "FLAG at ≥ 80% across ≥ 3 outflows, or any chain-matched user watchlist exposure",
+        "mattersFor": "send, approve, interact",
+        "explanation": "No configured watchlist exposure or concentrated initiated-outflow pattern was observed in the checked range.",
+        "evidence": [],
+        "limitations": "Bounded indexed-event coverage; token implementations may be non-standard."
+      }
+    ],
+    "coverage": {
+      "requested": {
+        "fromBlock": 20774584,
+        "toBlock": 20775583
+      },
+      "retrieved": {
+        "fromBlock": 20774584,
+        "toBlock": 20775583
+      },
+      "complete": true,
+      "truncated": false,
+      "sampled": false,
+      "batches": 3,
+      "expectedBatches": 3,
+      "failures": [],
+      "source": "Official Pharos Chain MCP",
+      "endpoint": "https://mcp.pharos.xyz/mcp",
+      "limits": "get_logs pages are at most 1,000 blocks; this app requests three indexed event views per page.",
+      "applicable": 4,
+      "evaluated": 3,
+      "unknown": 1,
+      "stale": false,
+      "analysisBlock": 20775583,
+      "analysisTime": "2026-10-20T20:09:15.147Z"
+    },
+    "method": "HIGH requires two independent flagged signal families; MEDIUM requires one; LOW requires zero and sufficient coverage. Data gaps never become LOW.",
+    "disclaimer": "This is a bounded counterparty briefing, not a safety certification, criminal attribution, or scam prediction."
+  }
+}

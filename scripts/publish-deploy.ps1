@@ -31,13 +31,13 @@ node scripts/capture-live-evidence.mjs 'https://pharos-wallet-risk-checker.shoup
 if ($LASTEXITCODE -ne 0) { throw 'Live evidence capture failed; no result was relabeled.' }
 
 Write-Host '==> Publish exact source and evidence'
-git -c safe.directory=$Project init
-git -c safe.directory=$Project branch -M main
-git -c safe.directory=$Project remote remove origin 2>$null
-git -c safe.directory=$Project remote add origin https://github.com/shoupeorg/pharos-wallet-risk-checker.git
-git -c safe.directory=$Project add .
-git -c safe.directory=$Project commit -m 'Build Pharos Wallet Risk Checker'
+git config --global --add safe.directory $Project
+git init
+git branch -M main
+git remote set-url origin https://github.com/shoupeorg/pharos-wallet-risk-checker.git
+git add .
+git commit -m 'Build Pharos Wallet Risk Checker'
 if ($LASTEXITCODE -ne 0) { throw 'Git commit failed.' }
-git -c safe.directory=$Project push -u origin main
+git push -u origin main
 if ($LASTEXITCODE -ne 0) { throw 'GitHub push failed.' }
 Write-Host 'Wallet Risk Checker publication, deployment, and evidence completed.' -ForegroundColor Green
